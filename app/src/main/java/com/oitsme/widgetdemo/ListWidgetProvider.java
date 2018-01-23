@@ -3,18 +3,18 @@ package com.oitsme.widgetdemo;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.RemoteViewsService;
 import android.widget.Toast;
 
 public class ListWidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = "SKYWANG";
 
-    public static final String FOLD_ACTION = "com.oitsme.FOLD_ACTION";
+    public static final String REFRESH_WIDGET = "com.oitsme.REFRESH_WIDGET";
     public static final String COLLECTION_VIEW_ACTION = "com.oitsme.COLLECTION_VIEW_ACTION";
     public static final String COLLECTION_VIEW_EXTRA = "com.oitsme.COLLECTION_VIEW_EXTRA";
     public static final String LOCK_ACTION = "com.oitsme.LOCK_ACTION";
@@ -30,7 +30,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.layout_widget);
 
             // 设置响应 “按钮(bt_refresh)” 的intent
-            Intent btIntent = new Intent().setAction(FOLD_ACTION);
+            Intent btIntent = new Intent().setAction(REFRESH_WIDGET);
             PendingIntent btPendingIntent = PendingIntent.getBroadcast(context, 0, btIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.tv_hide, btPendingIntent);
 
@@ -83,11 +83,13 @@ public class ListWidgetProvider extends AppWidgetProvider {
                     Toast.makeText(context, "unlock"+index, Toast.LENGTH_SHORT).show();
                     break;
             }
-        } else if (action.equals(FOLD_ACTION)) {
+        } else if (action.equals(REFRESH_WIDGET)) {
             // 接受“bt_refresh”的点击事件的广播
-            Toast.makeText(context, "Click Button", Toast.LENGTH_SHORT).show();
-        } else if (action == LOCK_ACTION) {
-            Toast.makeText(context, "Click Lock", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "刷新...", Toast.LENGTH_SHORT).show();
+            final AppWidgetManager mgr = AppWidgetManager.getInstance(context);
+            final ComponentName cn = new ComponentName(context,ListWidgetProvider.class);
+            ListRemoteViewsFactory.refresh();
+            mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn),R.id.lv_device);
         }
         super.onReceive(context, intent);
     }
