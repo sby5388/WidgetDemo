@@ -2,50 +2,68 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_right"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/bg_widget"
-    android:orientation="vertical"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="#ccc"
-        android:layout_height="40dp">
+        android:layout_height="40dp"
+        android:background="#ccc">
+
         <ImageView
             android:id="@+id/iv_icon"
             android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
-            android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@mipmap/ic_launcher_round"
-            android:layout_height="30dp" />
+            android:layout_marginStart="5dp"
+            android:background="@mipmap/ic_launcher_round" />
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_toEndOf="@id/iv_icon"
-            android:layout_centerVertical="true"
-            android:text="OITSME"/>
+            android:text="Widget" />
 
-        <TextView
-            android:id="@+id/tv_hide"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="刷新"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="5dp"/>
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:indeterminateTint="@color/colorAccent"
+                android:indeterminateTintMode="src_atop"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:text="刷新"
+                android:padding="5dp"
+                android:textSize="12sp" />
+        </LinearLayout>
+
     </RelativeLayout>
 
     <ListView
         android:id="@+id/lv_device"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="4dip"
-        android:horizontalSpacing="4dip"
         android:columnWidth="80dip"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:horizontalSpacing="4dip"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="4dip" />
 
 
 </LinearLayout>

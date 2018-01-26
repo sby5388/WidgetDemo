@@ -6,19 +6,27 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 public class ListWidgetProvider extends AppWidgetProvider {
 
-    private static final String TAG = "SKYWANG";
+    private static final String TAG = "WIDGET";
 
     public static final String REFRESH_WIDGET = "com.oitsme.REFRESH_WIDGET";
     public static final String COLLECTION_VIEW_ACTION = "com.oitsme.COLLECTION_VIEW_ACTION";
     public static final String COLLECTION_VIEW_EXTRA = "com.oitsme.COLLECTION_VIEW_EXTRA";
-    public static final String LOCK_ACTION = "com.oitsme.LOCK_ACTION";
-    public static final String UNLOCK_ACTION = "com.oitsme.UNLOCK_ACTION";
+    private static Handler mHandler=new Handler();
+    private Runnable runnable=new Runnable() {
+        @Override
+        public void run() {
+            hideLoading(Utils.getContext());
+            Toast.makeText(Utils.getContext(), "刷新成功", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -32,7 +40,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
             // 设置响应 “按钮(bt_refresh)” 的intent
             Intent btIntent = new Intent().setAction(REFRESH_WIDGET);
             PendingIntent btPendingIntent = PendingIntent.getBroadcast(context, 0, btIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            remoteViews.setOnClickPendingIntent(R.id.tv_hide, btPendingIntent);
+            remoteViews.setOnClickPendingIntent(R.id.tv_refresh, btPendingIntent);
 
             // 设置 “GridView(gridview)” 的adapter。
             // (01) intent: 对应启动 ListWidgetService(RemoteViewsService) 的intent
@@ -90,7 +98,44 @@ public class ListWidgetProvider extends AppWidgetProvider {
             final ComponentName cn = new ComponentName(context,ListWidgetProvider.class);
             ListRemoteViewsFactory.refresh();
             mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn),R.id.lv_device);
+            mHandler.postDelayed(runnable,2000);
+            showLoading(context);
         }
         super.onReceive(context, intent);
+    }
+
+    /**
+     * 显示加载loading
+     *
+     */
+    private void showLoading(Context context) {
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.layout_widget);
+        remoteViews.setViewVisibility(R.id.tv_refresh, View.VISIBLE);
+        remoteViews.setViewVisibility(R.id.progress_bar, View.VISIBLE);
+        remoteViews.setTextViewText(R.id.tv_refresh, "正在刷新...");
+        refreshWidget(context, remoteViews, false);
+    }
+
+    /**
+     * 显示加载loading
+     */
+    private void hideLoading(Context context) {
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.layout_widget);
+        remoteViews.setViewVisibility(R.id.progress_bar, View.GONE);
+        remoteViews.setTextViewText(R.id.tv_refresh, "刷新");
+        refreshWidget(context, remoteViews, false);
+    }
+
+
+
+    /**
+     * 刷新Widget
+     */
+    private void refreshWidget(Context context, RemoteViews remoteViews, boolean refreshList) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        ComponentName componentName = new ComponentName(context, ListWidgetProvider.class);
+        appWidgetManager.updateAppWidget(componentName, remoteViews);
+        if (refreshList)
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetManager.getAppWidgetIds(componentName), R.id.lv_device);
     }
 }
