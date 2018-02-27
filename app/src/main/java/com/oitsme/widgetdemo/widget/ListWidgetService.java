@@ -1,4 +1,4 @@
-package com.oitsme.widgetdemo;
+package com.oitsme.widgetdemo.widget;
 
 import android.content.Intent;
 import android.widget.RemoteViewsService;

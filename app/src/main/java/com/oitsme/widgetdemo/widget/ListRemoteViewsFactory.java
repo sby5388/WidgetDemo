@@ -1,4 +1,4 @@
-package com.oitsme.widgetdemo;
+package com.oitsme.widgetdemo.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+
+import com.oitsme.widgetdemo.Device;
+import com.oitsme.widgetdemo.R;
 
 import java.util.ArrayList;
 import java.util.List;

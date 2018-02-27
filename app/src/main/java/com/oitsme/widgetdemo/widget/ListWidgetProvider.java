@@ -1,4 +1,4 @@
-package com.oitsme.widgetdemo;
+package com.oitsme.widgetdemo.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -11,6 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import com.oitsme.widgetdemo.R;
+import com.oitsme.widgetdemo.Utils;
 
 public class ListWidgetProvider extends AppWidgetProvider {
 

@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".ListWidgetProvider">
+        <receiver android:name=".widget.ListWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 
@@ -34,7 +34,7 @@
         </receiver>
 
         <service
-            android:name=".ListWidgetService"
+            android:name=".widget.ListWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
