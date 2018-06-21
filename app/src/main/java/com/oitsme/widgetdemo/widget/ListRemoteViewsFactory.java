@@ -25,7 +25,7 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private static List<Device> mDevices;
 
     /**
-     * 构造GridRemoteViewsFactory
+     * 构造ListRemoteViewsFactory
      */
     public ListRemoteViewsFactory(Context context, Intent intent) {
         mContext = context;
@@ -72,8 +72,6 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private void initListViewData() {
         mDevices = new ArrayList<>();
         mDevices.add(new Device("Hello", 0));
-        mDevices.add(new Device("Oitsme", 1));
-        mDevices.add(new Device("Hi", 0));
         mDevices.add(new Device("Hey", 1));
     }
     private static int i;

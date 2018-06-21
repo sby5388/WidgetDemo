@@ -3,13 +3,12 @@
     android:id="@+id/ll_right"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_widget"
+    android:background="@drawable/ic_widget"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="#ccc">
+        android:layout_height="40dp">
 
         <ImageView
             android:id="@+id/iv_icon"
@@ -26,7 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/iv_icon"
-            android:text="Widget" />
+            android:text="Widget"
+            android:textColor="@color/gray_40" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -48,21 +48,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
-                android:text="刷新"
                 android:padding="5dp"
+                android:text="刷新"
+                android:textColor="@color/gray_40"
                 android:textSize="12sp" />
         </LinearLayout>
 
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/lv_device"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#cdcdcd" />
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnWidth="80dip"
-        android:gravity="center"
-        android:horizontalSpacing="4dip"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="4dip" />
+        android:background="@color/transparent">
+
+        <ListView
+            android:id="@+id/lv_device"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:dividerHeight="0.5dp"
+
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tv_no_device"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@color/transparent"
+            android:gravity="center"
+            android:text="@string/widget_no_device"
+            android:textColor="@color/gray_40"
+            android:visibility="gone" />
+    </FrameLayout>
+
 
 </LinearLayout>

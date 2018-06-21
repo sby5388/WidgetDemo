@@ -22,12 +22,12 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 
-                <!-- GridWidgetProvider接收点击ListView的响应事件 -->
-                <action android:name="com.oitsme.COLLECTION_VIEW_ACTION" />
-                <!-- GridWidgetProvider接收点击bt_refresh的响应事件 -->
-                <action android:name="com.oitsme.REFRESH_WIDGET" />
-                <action android:name="com.oitsme.LOCK_ACTION"/>
-                <action android:name="com.oitsme.UNLOCK_ACTION"/>
+                <!-- ListWidgetProvider接收点击ListView的响应事件 -->
+                <action android:name="com.zhpan.COLLECTION_VIEW_ACTION" />
+                <!-- ListWidgetProvider接收点击bt_refresh的响应事件 -->
+                <action android:name="com.zhpan.REFRESH_WIDGET" />
+                <action android:name="com.zhpan.LOCK_ACTION"/>
+                <action android:name="com.zhpan.UNLOCK_ACTION"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/widget_provider"/>

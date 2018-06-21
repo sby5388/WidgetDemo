@@ -19,9 +19,9 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = "WIDGET";
 
-    public static final String REFRESH_WIDGET = "com.oitsme.REFRESH_WIDGET";
-    public static final String COLLECTION_VIEW_ACTION = "com.oitsme.COLLECTION_VIEW_ACTION";
-    public static final String COLLECTION_VIEW_EXTRA = "com.oitsme.COLLECTION_VIEW_EXTRA";
+    public static final String REFRESH_WIDGET = "com.zhpan.REFRESH_WIDGET";
+    public static final String COLLECTION_VIEW_ACTION = "com.zhpan.COLLECTION_VIEW_ACTION";
+    public static final String COLLECTION_VIEW_EXTRA = "com.zhpan.COLLECTION_VIEW_EXTRA";
     private static Handler mHandler=new Handler();
     private Runnable runnable=new Runnable() {
         @Override
@@ -48,22 +48,21 @@ public class ListWidgetProvider extends AppWidgetProvider {
             // 设置 “ListView” 的adapter。
             // (01) intent: 对应启动 ListWidgetService(RemoteViewsService) 的intent
             // (02) setRemoteAdapter: 设置 ListView的适配器
-            //    通过setRemoteAdapter将ListView和GridWidgetService关联起来，
+            //    通过setRemoteAdapter将ListView和ListWidgetService关联起来，
             //    以达到通过 ListWidgetService 更新 ListView 的目的
             Intent serviceIntent = new Intent(context, ListWidgetService.class);
             remoteViews.setRemoteAdapter(R.id.lv_device, serviceIntent);
 
 
             // 设置响应 “ListView” 的intent模板
-            // 说明：“集合控件(如GridView、ListView、StackView等)”中包含很多子元素，如GridView包含很多格子。
+            // 说明：“集合控件(如GridView、ListView、StackView等)”中包含很多子元素。
             //     它们不能像普通的按钮一样通过 setOnClickPendingIntent 设置点击事件，必须先通过两步。
             //        (01) 通过 setPendingIntentTemplate 设置 “intent模板”，这是比不可少的！
             //        (02) 然后在处理该“集合控件”的RemoteViewsFactory类的getViewAt()接口中 通过 setOnClickFillInIntent 设置“集合控件的某一项的数据”
-            Intent gridIntent = new Intent();
-
-            gridIntent.setAction(COLLECTION_VIEW_ACTION);
-            gridIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, gridIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent listIntent = new Intent();
+            listIntent.setAction(COLLECTION_VIEW_ACTION);
+            listIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, listIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             // 设置intent模板
             remoteViews.setPendingIntentTemplate(R.id.lv_device, pendingIntent);
             // 调用集合管理器对集合进行更新
@@ -120,7 +119,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     }
 
     /**
-     * 显示加载loading
+     * 隐藏加载loading
      */
     private void hideLoading(Context context) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.layout_widget);
