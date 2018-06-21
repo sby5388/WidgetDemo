@@ -4,6 +4,7 @@
     android:minWidth="300dp"
     android:previewImage="@drawable/ic_launcher_background"
     android:initialLayout="@layout/layout_widget"
+    android:updatePeriodMillis="50000"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"> 
     

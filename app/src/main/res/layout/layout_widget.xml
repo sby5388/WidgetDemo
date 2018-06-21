@@ -65,5 +65,4 @@
         android:numColumns="auto_fit"
         android:verticalSpacing="4dip" />
 
-
 </LinearLayout>

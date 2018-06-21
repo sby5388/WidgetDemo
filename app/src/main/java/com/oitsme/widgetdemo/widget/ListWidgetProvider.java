@@ -45,16 +45,16 @@ public class ListWidgetProvider extends AppWidgetProvider {
             PendingIntent btPendingIntent = PendingIntent.getBroadcast(context, 0, btIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.tv_refresh, btPendingIntent);
 
-            // 设置 “GridView(gridview)” 的adapter。
+            // 设置 “ListView” 的adapter。
             // (01) intent: 对应启动 ListWidgetService(RemoteViewsService) 的intent
-            // (02) setRemoteAdapter: 设置 gridview的适配器
-            //    通过setRemoteAdapter将gridview和GridWidgetService关联起来，
-            //    以达到通过 ListWidgetService 更新 gridview 的目的
+            // (02) setRemoteAdapter: 设置 ListView的适配器
+            //    通过setRemoteAdapter将ListView和GridWidgetService关联起来，
+            //    以达到通过 ListWidgetService 更新 ListView 的目的
             Intent serviceIntent = new Intent(context, ListWidgetService.class);
             remoteViews.setRemoteAdapter(R.id.lv_device, serviceIntent);
 
 
-            // 设置响应 “GridView(gridview)” 的intent模板
+            // 设置响应 “ListView” 的intent模板
             // 说明：“集合控件(如GridView、ListView、StackView等)”中包含很多子元素，如GridView包含很多格子。
             //     它们不能像普通的按钮一样通过 setOnClickPendingIntent 设置点击事件，必须先通过两步。
             //        (01) 通过 setPendingIntentTemplate 设置 “intent模板”，这是比不可少的！

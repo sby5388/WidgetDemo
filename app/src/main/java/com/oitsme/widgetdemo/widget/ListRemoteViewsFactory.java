@@ -26,8 +26,6 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     /**
      * 构造GridRemoteViewsFactory
-     *
-     * @author skywang
      */
     public ListRemoteViewsFactory(Context context, Intent intent) {
         mContext = context;
@@ -39,7 +37,7 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     public RemoteViews getViewAt(int position) {
         //  HashMap<String, Object> map;
 
-        // 获取 grid_view_item.xml 对应的RemoteViews
+        // 获取 item_widget_device.xml 对应的RemoteViews
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.item_widget_device);
 
         // 设置 第position位的“视图”的数据
@@ -69,9 +67,7 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
 
     /**
-     * 初始化GridView的数据
-     *
-     * @author skywang
+     * 初始化ListView的数据
      */
     private void initListViewData() {
         mDevices = new ArrayList<>();
@@ -112,7 +108,7 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getViewTypeCount() {
-        // 只有一类 GridView
+        // 只有一类 ListView
         return 1;
     }
 
