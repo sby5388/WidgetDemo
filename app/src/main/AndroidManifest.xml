@@ -25,13 +25,7 @@
         <receiver android:name=".widget.ListWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-
-                <!-- ListWidgetProvider接收点击ListView的响应事件 -->
                 <action android:name="com.zhpan.COLLECTION_VIEW_ACTION" />
-                <!-- ListWidgetProvider接收点击bt_refresh的响应事件 -->
-                <action android:name="com.zhpan.REFRESH_WIDGET" />
-                <action android:name="com.zhpan.LOCK_ACTION" />
-                <action android:name="com.zhpan.UNLOCK_ACTION" />
             </intent-filter>
 
             <meta-data

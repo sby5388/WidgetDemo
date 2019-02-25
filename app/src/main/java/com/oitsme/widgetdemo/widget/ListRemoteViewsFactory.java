@@ -47,20 +47,14 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         rv.setTextViewText(R.id.tv_name, device.getName());
 
         // 设置 第position位的“视图”对应的响应事件
-        Intent fillInIntent = new Intent();
-        fillInIntent.putExtra(TYPE, 0);
-        fillInIntent.putExtra(ListWidgetProvider.COLLECTION_VIEW_EXTRA, position);
+        Intent fillInIntent = ListViewReceiver.newIntent(0, position);
         rv.setOnClickFillInIntent(R.id.rl_widget_device, fillInIntent);
 
 
-        Intent lockIntent = new Intent();
-        lockIntent.putExtra(ListWidgetProvider.COLLECTION_VIEW_EXTRA, position);
-        lockIntent.putExtra(TYPE, 1);
+        Intent lockIntent = ListViewReceiver.newIntent(1, position);
         rv.setOnClickFillInIntent(R.id.iv_lock, lockIntent);
 
-        Intent unlockIntent = new Intent();
-        unlockIntent.putExtra(TYPE, 2);
-        unlockIntent.putExtra(ListWidgetProvider.COLLECTION_VIEW_EXTRA, position);
+        Intent unlockIntent = ListViewReceiver.newIntent(2, position);
         rv.setOnClickFillInIntent(R.id.iv_unlock, unlockIntent);
 
         return rv;
@@ -78,7 +72,7 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private static int i;
 
-    public static void refresh() {
+    static void refresh() {
         i++;
         mDevices.add(new Device("Refresh" + i, 1));
     }

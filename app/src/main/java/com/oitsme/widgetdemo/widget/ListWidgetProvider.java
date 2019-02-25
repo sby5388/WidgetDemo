@@ -5,10 +5,8 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.oitsme.widgetdemo.R;
 
@@ -18,9 +16,6 @@ import com.oitsme.widgetdemo.R;
 public class ListWidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = "WIDGET";
-
-    public static final String COLLECTION_VIEW_ACTION = "com.zhpan.COLLECTION_VIEW_ACTION";
-    public static final String COLLECTION_VIEW_EXTRA = "com.zhpan.COLLECTION_VIEW_EXTRA";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -50,9 +45,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
             //     它们不能像普通的按钮一样通过 setOnClickPendingIntent 设置点击事件，必须先通过两步。
             //        (01) 通过 setPendingIntentTemplate 设置 “intent模板”，这是比不可少的！
             //        (02) 然后在处理该“集合控件”的RemoteViewsFactory类的getViewAt()接口中 通过 setOnClickFillInIntent 设置“集合控件的某一项的数据”
-            Intent listIntent = new Intent();
-            listIntent.setAction(COLLECTION_VIEW_ACTION);
-            listIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            Intent listIntent = ListViewReceiver.newIntent(context, appWidgetId);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, listIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             // 设置intent模板
             remoteViews.setPendingIntentTemplate(R.id.lv_device, pendingIntent);
@@ -61,33 +54,4 @@ public class ListWidgetProvider extends AppWidgetProvider {
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
-
-
-    @Override
-    public void onReceive(final Context context, Intent intent) {
-        String action = intent.getAction();
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        if (action.equals(COLLECTION_VIEW_ACTION)) {
-            // 接受“ListView”的点击事件的广播
-            int type = intent.getIntExtra("Type", 0);
-            int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    AppWidgetManager.INVALID_APPWIDGET_ID);
-            int index = intent.getIntExtra(COLLECTION_VIEW_EXTRA, 0);
-            switch (type) {
-                case 0:
-                    Toast.makeText(context, "item" + index, Toast.LENGTH_SHORT).show();
-                    break;
-                case 1:
-                    Toast.makeText(context, "lock" + index, Toast.LENGTH_SHORT).show();
-                    break;
-                case 2:
-                    Toast.makeText(context, "unlock" + index, Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    break;
-            }
-        }
-        super.onReceive(context, intent);
-    }
-
 }
