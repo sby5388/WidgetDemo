@@ -3,25 +3,24 @@ package com.oitsme.widgetdemo.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.oitsme.widgetdemo.R;
 
+/**
+ * @author Administrator
+ */
 public class ListWidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = "WIDGET";
 
-    public static final String REFRESH_WIDGET = "com.zhpan.REFRESH_WIDGET";
     public static final String COLLECTION_VIEW_ACTION = "com.zhpan.COLLECTION_VIEW_ACTION";
     public static final String COLLECTION_VIEW_EXTRA = "com.zhpan.COLLECTION_VIEW_EXTRA";
-    private static Handler mHandler = new Handler();
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -33,7 +32,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.layout_widget);
 
             // 设置响应 “按钮(bt_refresh)” 的intent
-            Intent btIntent = new Intent().setAction(REFRESH_WIDGET);
+            Intent btIntent = ListViewReceiver.newIntent(context);
             PendingIntent btPendingIntent = PendingIntent.getBroadcast(context, 0, btIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.tv_refresh, btPendingIntent);
 
@@ -87,56 +86,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
                 default:
                     break;
             }
-        } else if (action.equals(REFRESH_WIDGET)) {
-            // 接受“bt_refresh”的点击事件的广播
-            Toast.makeText(context, "刷新...", Toast.LENGTH_SHORT).show();
-            final AppWidgetManager mgr = AppWidgetManager.getInstance(context);
-            final ComponentName cn = new ComponentName(context, ListWidgetProvider.class);
-            ListRemoteViewsFactory.refresh();
-            mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn), R.id.lv_device);
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    hideLoading(context);
-                    Toast.makeText(context, "刷新成功", Toast.LENGTH_SHORT).show();
-                }
-            }, 2000);
-            showLoading(context);
         }
         super.onReceive(context, intent);
     }
 
-    /**
-     * 显示加载loading
-     */
-    private void showLoading(Context context) {
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.layout_widget);
-        remoteViews.setViewVisibility(R.id.tv_refresh, View.VISIBLE);
-        remoteViews.setViewVisibility(R.id.progress_bar, View.VISIBLE);
-        remoteViews.setTextViewText(R.id.tv_refresh, "正在刷新...");
-        refreshWidget(context, remoteViews, false);
-    }
-
-    /**
-     * 隐藏加载loading
-     */
-    private void hideLoading(Context context) {
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.layout_widget);
-        remoteViews.setViewVisibility(R.id.progress_bar, View.GONE);
-        remoteViews.setTextViewText(R.id.tv_refresh, "刷新");
-        refreshWidget(context, remoteViews, true);
-    }
-
-
-    /**
-     * 刷新Widget
-     */
-    private void refreshWidget(Context context, RemoteViews remoteViews, boolean refreshList) {
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        ComponentName componentName = new ComponentName(context, ListWidgetProvider.class);
-        appWidgetManager.updateAppWidget(componentName, remoteViews);
-        if (refreshList) {
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetManager.getAppWidgetIds(componentName), R.id.lv_device);
-        }
-    }
 }

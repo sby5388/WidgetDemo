@@ -3,13 +3,17 @@
     package="com.oitsme.widgetdemo">
 
     <application
-        android:name=".MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver
+            android:name=".widget.ListViewReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,11 +30,13 @@
                 <action android:name="com.zhpan.COLLECTION_VIEW_ACTION" />
                 <!-- ListWidgetProvider接收点击bt_refresh的响应事件 -->
                 <action android:name="com.zhpan.REFRESH_WIDGET" />
-                <action android:name="com.zhpan.LOCK_ACTION"/>
-                <action android:name="com.zhpan.UNLOCK_ACTION"/>
+                <action android:name="com.zhpan.LOCK_ACTION" />
+                <action android:name="com.zhpan.UNLOCK_ACTION" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
-                android:resource="@xml/widget_provider"/>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider" />
         </receiver>
 
         <service

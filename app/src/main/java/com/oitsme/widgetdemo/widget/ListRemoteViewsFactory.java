@@ -18,7 +18,8 @@ import java.util.List;
  */
 
 class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
-    private final static String TAG="Widget";
+    private final static String TAG = "Widget";
+    private static final String TYPE = "Type";
     private Context mContext;
     private int mAppWidgetId;
 
@@ -27,7 +28,7 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     /**
      * 构造ListRemoteViewsFactory
      */
-    public ListRemoteViewsFactory(Context context, Intent intent) {
+    ListRemoteViewsFactory(Context context, Intent intent) {
         mContext = context;
         mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -47,18 +48,18 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
         // 设置 第position位的“视图”对应的响应事件
         Intent fillInIntent = new Intent();
-        fillInIntent.putExtra("Type", 0);
+        fillInIntent.putExtra(TYPE, 0);
         fillInIntent.putExtra(ListWidgetProvider.COLLECTION_VIEW_EXTRA, position);
         rv.setOnClickFillInIntent(R.id.rl_widget_device, fillInIntent);
 
 
         Intent lockIntent = new Intent();
         lockIntent.putExtra(ListWidgetProvider.COLLECTION_VIEW_EXTRA, position);
-        lockIntent.putExtra("Type", 1);
+        lockIntent.putExtra(TYPE, 1);
         rv.setOnClickFillInIntent(R.id.iv_lock, lockIntent);
 
         Intent unlockIntent = new Intent();
-        unlockIntent.putExtra("Type", 2);
+        unlockIntent.putExtra(TYPE, 2);
         unlockIntent.putExtra(ListWidgetProvider.COLLECTION_VIEW_EXTRA, position);
         rv.setOnClickFillInIntent(R.id.iv_unlock, unlockIntent);
 
@@ -74,15 +75,17 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         mDevices.add(new Device("Hello", 0));
         mDevices.add(new Device("Hey", 1));
     }
+
     private static int i;
-    public static void refresh(){
+
+    public static void refresh() {
         i++;
-        mDevices.add(new Device("Refresh"+i, 1));
+        mDevices.add(new Device("Refresh" + i, 1));
     }
 
     @Override
     public void onCreate() {
-        Log.e(TAG,"onCreate");
+        Log.e(TAG, "onCreate");
         // 初始化“集合视图”中的数据
         initListViewData();
     }
