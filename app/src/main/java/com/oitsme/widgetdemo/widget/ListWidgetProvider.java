@@ -13,7 +13,6 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.oitsme.widgetdemo.R;
-import com.oitsme.widgetdemo.Utils;
 
 public class ListWidgetProvider extends AppWidgetProvider {
 
@@ -22,14 +21,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     public static final String REFRESH_WIDGET = "com.zhpan.REFRESH_WIDGET";
     public static final String COLLECTION_VIEW_ACTION = "com.zhpan.COLLECTION_VIEW_ACTION";
     public static final String COLLECTION_VIEW_EXTRA = "com.zhpan.COLLECTION_VIEW_EXTRA";
-    private static Handler mHandler=new Handler();
-    private Runnable runnable=new Runnable() {
-        @Override
-        public void run() {
-            hideLoading(Utils.getContext());
-            Toast.makeText(Utils.getContext(), "刷新成功", Toast.LENGTH_SHORT).show();
-        }
-    };
+    private static Handler mHandler = new Handler();
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -73,7 +65,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         String action = intent.getAction();
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         if (action.equals(COLLECTION_VIEW_ACTION)) {
@@ -87,20 +79,28 @@ public class ListWidgetProvider extends AppWidgetProvider {
                     Toast.makeText(context, "item" + index, Toast.LENGTH_SHORT).show();
                     break;
                 case 1:
-                    Toast.makeText(context, "lock"+index, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "lock" + index, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
-                    Toast.makeText(context, "unlock"+index, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "unlock" + index, Toast.LENGTH_SHORT).show();
+                    break;
+                default:
                     break;
             }
         } else if (action.equals(REFRESH_WIDGET)) {
             // 接受“bt_refresh”的点击事件的广播
             Toast.makeText(context, "刷新...", Toast.LENGTH_SHORT).show();
             final AppWidgetManager mgr = AppWidgetManager.getInstance(context);
-            final ComponentName cn = new ComponentName(context,ListWidgetProvider.class);
+            final ComponentName cn = new ComponentName(context, ListWidgetProvider.class);
             ListRemoteViewsFactory.refresh();
-            mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn),R.id.lv_device);
-            mHandler.postDelayed(runnable,2000);
+            mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn), R.id.lv_device);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    hideLoading(context);
+                    Toast.makeText(context, "刷新成功", Toast.LENGTH_SHORT).show();
+                }
+            }, 2000);
             showLoading(context);
         }
         super.onReceive(context, intent);
@@ -108,7 +108,6 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     /**
      * 显示加载loading
-     *
      */
     private void showLoading(Context context) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.layout_widget);
@@ -125,9 +124,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.layout_widget);
         remoteViews.setViewVisibility(R.id.progress_bar, View.GONE);
         remoteViews.setTextViewText(R.id.tv_refresh, "刷新");
-        refreshWidget(context, remoteViews, false);
+        refreshWidget(context, remoteViews, true);
     }
-
 
 
     /**
@@ -137,7 +135,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         ComponentName componentName = new ComponentName(context, ListWidgetProvider.class);
         appWidgetManager.updateAppWidget(componentName, remoteViews);
-        if (refreshList)
+        if (refreshList) {
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetManager.getAppWidgetIds(componentName), R.id.lv_device);
+        }
     }
 }
